@@ -6,7 +6,7 @@ import asyncio
 import json
 import base64
 
-client=commands.Bot(command_prefix=':', self_bot=True, help_command=None)
+client=commands.Bot(command_prefix='qwertyuiop', self_bot=True, help_command=None)
 
 GUILD_ID = 755793441287438469
 CHANNEL_ID = 994552773637062656
