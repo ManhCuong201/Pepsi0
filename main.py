@@ -35,12 +35,11 @@ async def on_ready():
     
 @client.event
 async def on_call():
-    while True:
-        await asyncio.sleep(1)
-        vc = discord.utils.get(client.get_guild(GUILD_ID).channels, id = CHANNEL_ID)
-        if client.get_guild(GUILD_ID).get_member(client.user.id).voice is None:
-            await vc.connect()
-            print(f"Successfully joined {vc.name} ({vc.id})")
+    await asyncio.sleep(1)
+    if not client.get_guild(GUILD_ID).get_member(client.user.id).voice:
+        vc = client.get_guild(GUILD_ID).get_channel(CHANNEL_ID)
+        await vc.connect()
+    client.dispatch("call")
             
 @client.command()
 async def join(ctx):
