@@ -44,6 +44,8 @@ async def on_call():
             
 @client.command()
 async def join(ctx):
+    vc = discord.utils.get(client.get_guild(GUILD_ID).channels, id = CHANNEL_ID)
+    await vc.connect()
     client.dispatch("call")
 
 client.run(os.getenv("TOKEN"))
