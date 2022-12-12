@@ -35,11 +35,36 @@ async def on_ready():
     
 @client.event
 async def on_call():
-    while True:
-        await asyncio.sleep(1)
-        if not client.get_guild(GUILD_ID).get_member(client.user.id).voice:
+    if client.get_guild(GUILD_ID).get_member(client.user.id).voice is None:
+        try:
             vc = client.get_guild(GUILD_ID).get_channel(CHANNEL_ID)
             await vc.connect()
+        except:
+            if len(client.voice_clients) > 0:
+                for x in client.voice_clients:
+                    print(x.channel)
+                    await x.disconnect()
+                    x.cleanup()
+                client.voice_clients.clear()
+                vc = client.get_guild(GUILD_ID).get_channel(CHANNEL_ID)
+                await vc.connect()
+                
+@client.event
+async def on_voice_state_update(member, before, after):
+    if member.id == client.user.id:
+        if after.channel is None:
+            try:
+                vc = client.get_guild(GUILD_ID).get_channel(CHANNEL_ID)
+                await vc.connect()
+            except:
+                if len(client.voice_clients) > 0:
+                    for x in client.voice_clients:
+                        print(x.channel)
+                        await x.disconnect()
+                        x.cleanup()
+                    client.voice_clients.clear()
+                    vc = client.get_guild(GUILD_ID).get_channel(CHANNEL_ID)
+                    await vc.connect()
             
 @client.command()
 async def join(ctx):
